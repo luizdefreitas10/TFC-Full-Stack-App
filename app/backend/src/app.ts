@@ -1,6 +1,6 @@
 import * as express from 'express';
 // import validateTokenMiddleware from './middlewares/validateTokenMiddleware';
-import { userRouter } from './routes';
+import { teamsRouter, userRouter } from './routes';
 
 class App {
   public app: express.Express;
@@ -13,6 +13,7 @@ class App {
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
     this.app.use('/login', userRouter);
+    this.app.use('/teams', teamsRouter);
     // this.app.get('/login/validate', validateTokenMiddleware, userRouter);
     // this.app.post('/login', userRouter);
   }
