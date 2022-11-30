@@ -19,14 +19,16 @@ const login = async (user: ILogin): Promise<{ status: number | null, message: st
   }
   const response = await UserModel.findOne({ where: { email: user.email } });
   if (!response || !compareSync(user.password, response.password)) {
-    return { status: 401, message: 'Incorrect email or password',
-    // throw new Error('Incorrect email or password');
-    };
+    return { status: 401, message: 'Incorrect email or password' };
   }
 
   const { password, ...userWithoutPass } = response;
   const token = jwt.sign(userWithoutPass, secret);
   return { status: null, message: token };
 };
+
+// const validateLogin = async (token: string):Promise<string> => {
+
+// };
 
 export default { logIn: login };
