@@ -9,4 +9,14 @@ const getAll = async (req: Request, res: Response) => {
   res.status(200).json(message);
 };
 
-export default { getAll };
+const getTeamById = async (req: Request, res: Response) => {
+  const { status, message } = await teamsService.default.getTeamById(Number(req.params.id));
+
+  if (status) {
+    res.status(status).json({ message });
+  }
+
+  res.status(200).json(message);
+};
+
+export default { getAll, getTeamById };
