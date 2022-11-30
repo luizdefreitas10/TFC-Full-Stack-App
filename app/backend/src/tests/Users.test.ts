@@ -37,4 +37,30 @@ describe('Verifica se é possível fazer login corretamente', () => {
     expect(chaiHttpResponse.body).to.deep.eq(admin);
   });
 
+  it('se retorna status 400 após efetuar login sem email', async () => {
+    chaiHttpResponse = await chai
+       .request(app).post('/login').send({
+        id: 1,
+        username: 'Admin',
+        role: 'admin',
+        password: 'secret_admin',
+      });
+
+    expect(chaiHttpResponse.status).to.be.eq(400);
+    expect(chaiHttpResponse.body).to.deep.eq({ message: "All fields must be filled" });
+  });
+
+  it('se retorna status 400 após efetuar login sem password', async () => {
+    chaiHttpResponse = await chai
+       .request(app).post('/login').send({
+        id: 1,
+        username: 'Admin',
+        role: 'admin',
+        email: 'admin@admin.com',
+      });
+
+    expect(chaiHttpResponse.status).to.be.eq(400);
+    expect(chaiHttpResponse.body).to.deep.eq({ message: "All fields must be filled" });
+  });
+
 });
