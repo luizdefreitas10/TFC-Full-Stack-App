@@ -1,6 +1,6 @@
 import * as express from 'express';
 // import validateTokenMiddleware from './middlewares/validateTokenMiddleware';
-import { teamsRouter, userRouter } from './routes';
+import { teamsRouter, userRouter, matchesRouter } from './routes';
 
 class App {
   public app: express.Express;
@@ -14,6 +14,7 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
     this.app.use('/login', userRouter);
     this.app.use('/teams', teamsRouter);
+    this.app.use('/matches', matchesRouter);
     // this.app.get('/login/validate', validateTokenMiddleware, userRouter);
     // this.app.post('/login', userRouter);
   }
