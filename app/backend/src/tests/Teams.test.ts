@@ -9,7 +9,7 @@ import Team from '../database/models/TeamModel';
 import { allTeams, soccerTeam } from './mocks/token.mock';
 
 import { Response } from 'superagent';
-import { before, after } from 'node:test';
+// import { before, after } from 'node:test';
 
 chai.use(chaiHttp);
 
@@ -20,7 +20,7 @@ const { expect } = chai;
 describe('Verifica se é possível listar times', () => {
   let chaiHttpResponse: Response;
 
-  before(async () => {
+  beforeEach(async () => {
     sinon
       .stub(Team, "findAll")
       .resolves(allTeams as Team[]);
@@ -29,7 +29,7 @@ describe('Verifica se é possível listar times', () => {
       .resolves(soccerTeam as Team);
   });
 
-  after(()=>{
+  afterEach(()=>{
     (Team.findAll as sinon.SinonStub).restore();
     (Team.findByPk as sinon.SinonStub).restore();
   })

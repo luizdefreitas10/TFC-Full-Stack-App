@@ -10,7 +10,7 @@ import User from '../database/models/UserModel';
 import { token, admin } from './mocks/token.mock';
 
 import { Response } from 'superagent';
-import { before, after } from 'node:test';
+// import { before, after } from 'node:test';
 
 chai.use(chaiHttp);
 
@@ -21,7 +21,7 @@ const { expect } = chai;
 describe('Verifica se é possível fazer login corretamente', () => {
   let chaiHttpResponse: Response;
 
-  before(async () => {
+  beforeEach(async () => {
     sinon
       .stub(User, "findOne")
       .resolves(admin as User);
@@ -30,7 +30,7 @@ describe('Verifica se é possível fazer login corretamente', () => {
       .resolves(token.token as string);
   });
 
-  after(()=>{
+  afterEach(()=>{
     (User.findOne as sinon.SinonStub).restore();
     (jwt.sign as sinon.SinonStub).restore();
   })
