@@ -10,8 +10,16 @@ const getAll = async (req: Request, res: Response) => {
   res.status(200).json(message);
 };
 
-// const filterByProgress = async (req: Request, res: Response) => {
-//   const { status, message } = await matchesService.default.filterByProgress(inProgress);
-// };
+const saveMatch = async (req: Request, res: Response) => {
+  const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+  const { status, message } = await matchesService.default.saveMatch({
+    homeTeam,
+    awayTeam,
+    homeTeamGoals,
+    awayTeamGoals,
+  });
+  if (status) return res.status(status).json({ message });
+  return res.status(201).json(message);
+};
 
-export default { getAll };
+export default { getAll, saveMatch };

@@ -1,3 +1,4 @@
+import IMatch from '../../interfaces/IMatch.interface';
 import MatchModel from '../models/MatchModel';
 import Team from '../models/TeamModel';
 
@@ -27,4 +28,9 @@ const filterByProgress = async (query: boolean)
   return { status: null, message: filtered };
 };
 
-export default { getAll, filterByProgress };
+const saveMatch = async (match: IMatch): Promise<{ status: number | null, message: IMatch }> => {
+  const { id } = await MatchModel.create({ ...match, inProgress: true });
+  return { status: null, message: { id, ...match, inProgress: true } };
+};
+
+export default { getAll, filterByProgress, saveMatch };
