@@ -22,4 +22,11 @@ const saveMatch = async (req: Request, res: Response) => {
   return res.status(201).json(message);
 };
 
-export default { getAll, saveMatch };
+const finishMatch = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { status, message } = await matchesService.default.finishMatch(id);
+  if (status) return res.status(status).json({ message });
+  return res.status(200).json({ message });
+};
+
+export default { getAll, saveMatch, finishMatch };

@@ -33,4 +33,9 @@ const saveMatch = async (match: IMatch): Promise<{ status: number | null, messag
   return { status: null, message: { id, ...match, inProgress: true } };
 };
 
-export default { getAll, filterByProgress, saveMatch };
+const finishMatch = async (id: number):Promise<{ status: null | number, message: string }> => {
+  await MatchModel.update({ inProgress: false }, { where: { id } });
+  return { status: null, message: 'Finished' };
+};
+
+export default { getAll, filterByProgress, saveMatch, finishMatch };
