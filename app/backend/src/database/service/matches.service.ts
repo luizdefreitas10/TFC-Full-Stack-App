@@ -1,3 +1,4 @@
+import IMatchUpdate from '../../interfaces/IMatchUpdate.interface';
 import IMatch from '../../interfaces/IMatch.interface';
 import MatchModel from '../models/MatchModel';
 import Team from '../models/TeamModel';
@@ -38,4 +39,14 @@ const finishMatch = async (id: number):Promise<{ status: null | number, message:
   return { status: null, message: 'Finished' };
 };
 
-export default { getAll, filterByProgress, saveMatch, finishMatch };
+const updateMatch = async (id: number, body: IMatchUpdate)
+:Promise<{ status: null | number, message: string }> => {
+  const { homeTeamGoals, awayTeamGoals } = body;
+  const [response] = await MatchModel.update({ homeTeamGoals, awayTeamGoals }, {
+    where: { id },
+  });
+  if (!response) return { status: 404, message: 'There is no team with such id!' };
+  return { status: 200, message: 'Match updated!' };
+};
+
+export default { getAll, filterByProgress, saveMatch, finishMatch, updateMatch };

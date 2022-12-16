@@ -39,4 +39,11 @@ const finishMatch = async (req: Request, res: Response) => {
   return res.status(200).json({ message });
 };
 
-export default { getAll, saveMatch, finishMatch };
+const updateMatch = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { status, message } = await matchesService.default.updateMatch(id, req.body);
+  if (status) return res.status(status).json({ message });
+  return res.status(200).json({ message });
+};
+
+export default { getAll, saveMatch, finishMatch, updateMatch };
