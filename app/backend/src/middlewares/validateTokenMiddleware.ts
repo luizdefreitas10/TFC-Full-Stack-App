@@ -7,15 +7,19 @@ dotenv.config();
 const secret = process.env.JWT_SECRET as string;
 
 const validateTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('authorization');
+  try {
+    const token = req.header('authorization');
 
-  if (!token) {
-    return res.status(401).json({ message: 'Token not found' });
+    if (!token) {
+      return res.status(401).json({ message: 'Token not found' });
+    }
+
+    const decoded = jwt.verify(token, secret);
+    req.body.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Token must be a valid token' });
   }
-
-  const decoded = jwt.verify(token, secret);
-  req.body.user = decoded;
-  next();
 };
 
 export default validateTokenMiddleware;
