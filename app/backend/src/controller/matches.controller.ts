@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import matchSchema from '../validations/match.schema';
 import * as matchesService from '../database/service/matches.service';
 
 const getAll = async (req: Request, res: Response) => {
@@ -12,6 +13,11 @@ const getAll = async (req: Request, res: Response) => {
 
 const saveMatch = async (req: Request, res: Response) => {
   const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+  const { error } = matchSchema.validate({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+  if (error) {
+    return res.status(422)
+      .json({ message: 'It is not possible to create a match with two equal teams' });
+  }
   const { status, message } = await matchesService.default.saveMatch({
     homeTeam,
     awayTeam,
