@@ -15,7 +15,7 @@ class App {
     this.app.use('/login', userRouter);
     this.app.use('/teams', teamsRouter);
     this.app.use('/matches', matchesRouter);
-    this.app.use('/leaderboards', leaderboardRouter);
+    this.app.use('/leaderboard', leaderboardRouter);
     // this.app.get('/login/validate', validateTokenMiddleware, userRouter);
     // this.app.post('/login', userRouter);
   }

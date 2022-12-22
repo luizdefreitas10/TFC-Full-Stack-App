@@ -50,4 +50,13 @@ const sortTeams = (leaderboard: ILeaderboard[]): void => {
   ));
 };
 
-export default { teamsMath, teamsBalance, sortTeams };
+const matchFilter = (matches: MatchModel[], id: number, visitor: string | null): MatchModel[] => {
+  const filteredMatches = matches.filter(({ homeTeam, awayTeam, inProgress }) => {
+    if (visitor === 'away') return inProgress ? false : awayTeam === id;
+    if (visitor === 'home') return inProgress ? false : homeTeam === id;
+    return inProgress ? false : homeTeam === id || awayTeam === id;
+  });
+  return filteredMatches;
+};
+
+export default { teamsMath, teamsBalance, sortTeams, matchFilter };

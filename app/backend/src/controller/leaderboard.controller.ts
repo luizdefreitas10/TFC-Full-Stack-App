@@ -9,11 +9,7 @@ const getLb = async (_req: Request, res: Response) => {
   const { message: matches } = await matchService.default.getAll();
   const lb: ILeaderboard[] = [];
   teams.forEach(({ id, teamName }) => {
-    const filteredMatches = matches.filter(({ homeTeam, awayTeam, inProgress }) => {
-      const response = inProgress ? false : homeTeam === id || awayTeam === id;
-      console.log(response);
-      return response;
-    });
+    const filteredMatches = leaderboardUtils.default.matchFilter(matches, id, null);
     const matchData = leaderboardUtils.default.teamsMath(filteredMatches, id, teamName);
     leaderboardUtils.default.teamsBalance(matchData);
     lb.push(matchData);
@@ -22,4 +18,32 @@ const getLb = async (_req: Request, res: Response) => {
   res.status(200).json(lb);
 };
 
-export default { getLb };
+const getHomeLb = async (_req: Request, res: Response) => {
+  const { message: teams } = await teamService.default.getAll();
+  const { message: matches } = await matchService.default.getAll();
+  const lb: ILeaderboard[] = [];
+  teams.forEach(({ id, teamName }) => {
+    const matchData = leaderboardUtils.default.matchFilter(matches, id, 'home');
+    const result = leaderboardUtils.default.teamsMath(matchData, id, teamName);
+    leaderboardUtils.default.teamsBalance(result);
+    lb.push(result);
+  });
+  leaderboardUtils.default.sortTeams(lb);
+  res.status(200).json(lb);
+};
+
+const getAwayLb = async (_req: Request, res: Response) => {
+  const { message: teams } = await teamService.default.getAll();
+  const { message: matches } = await matchService.default.getAll();
+  const lb: ILeaderboard[] = [];
+  teams.forEach(({ id, teamName }) => {
+    const matchData = leaderboardUtils.default.matchFilter(matches, id, 'away');
+    const result = leaderboardUtils.default.teamsMath(matchData, id, teamName);
+    leaderboardUtils.default.teamsBalance(result);
+    lb.push(result);
+  });
+  leaderboardUtils.default.sortTeams(lb);
+  res.status(200).json(lb);
+};
+
+export default { getLb, getHomeLb, getAwayLb };
